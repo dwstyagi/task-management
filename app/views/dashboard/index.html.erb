@@ -1,5 +1,9 @@
 <div data-controller="toggle" class="h-screen bg-gray-900">
   <%= render 'admin_navbar' %>
-  <aside></aside>
-  <main></main>
+  <div class="flex h-full">
+    <%= render 'sidebar' %>
+    <main class="text-gray-200">
+      <h2>This is the main</h2>
+    </main>
+  </div>
 </div>
