@@ -1,0 +1,13 @@
+<nav class="bg-gray-700 px-6 py-4 text-gray-200 flex items-center justify-between ">
+    <div>
+        <button>
+            <%= inline_svg_tag("sidebar.svg") %>
+        </button>
+    </div>
+    <div class="flex items-center relative">
+        <input type="text" name="" id="" class="rounded-md bg-gray-700" placeholder="Search For Project">
+        <%= inline_svg_tag("search.svg", class: "absolute right-0 cursor-pointer") %>
+    </div>
+    <div><%= inline_svg_tag("notification.svg") %></div>
+    <div><%= inline_svg_tag("user.svg") %></div>
+</nav>
