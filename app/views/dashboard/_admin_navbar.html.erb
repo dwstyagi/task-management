@@ -9,5 +9,8 @@
         <%= inline_svg_tag("search.svg", class: "absolute right-0 cursor-pointer") %>
     </div>
     <div><%= inline_svg_tag("notification.svg") %></div>
-    <div><%= inline_svg_tag("user.svg") %></div>
+    <div data-action="click->toggle#toggleProfileCard" class="relative cursor-pointer">
+        <%= inline_svg_tag("user.svg") %>
+        <%= render 'profile_card' %>
+    </div>
 </nav>
