@@ -1,7 +1,7 @@
 class ProjectsController < ApplicationController
   layout 'admin'
   before_action :authenticate_user!
-  before_action :set_project, only: [:destroy, :edit, :update]
+  before_action :set_project, only: [:destroy, :edit, :update, :show]
 
   def index
     @projects = Project.all
@@ -22,6 +22,9 @@ class ProjectsController < ApplicationController
   end
 
   def edit
+  end
+
+  def show
   end
 
   def update
