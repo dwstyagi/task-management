@@ -4,7 +4,7 @@ class ProjectsController < ApplicationController
   before_action :set_project, only: [:destroy, :edit, :update, :show]
 
   def index
-    @projects = Project.all
+    @pagy, @projects = pagy(Project.includes(:tasks), limit: 5)
   end
 
   def create
@@ -25,6 +25,7 @@ class ProjectsController < ApplicationController
   end
 
   def show
+    @pagy, @tasks = pagy(@project.tasks.incomplete_first, limit: 5)
   end
 
   def update
