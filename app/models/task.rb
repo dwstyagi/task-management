@@ -25,4 +25,15 @@ class Task < ApplicationRecord
       errors.add(:due_date, "Must Be in Future")
     end
   end
+
+  def self.ransackable_attributes(auth_object = nil)
+    [
+      "completed", "completed_at", "created_at", "due_date", "id", "name", "priority", 
+      "project_id", "updated_at"
+    ]
+  end
+
+  def expired?
+    due_date < Date.current && !completed
+  end
 end

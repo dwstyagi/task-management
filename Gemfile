@@ -31,6 +31,7 @@ gem 'inline_svg'
 gem 'htmlbeautifier'
 gem 'faker'
 gem 'pagy'
+gem 'ransack'
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]

@@ -4,6 +4,7 @@
       <%= link_to "New task", new_project_task_path(@project), class: "rounded-lg py-3 px-5 bg-blue-600 text-white block font-medium", data: {turbo: true, turbo_frame: :modal} %>
     </div>
     <progress class="w-full mt-4" value="<%= @project.tasks.completed.count %>" max="<%= @project.tasks.count %>"></progress>
+    <%= render 'tasks/search' %>
     <%= render 'tasks/task' %>
 </div>
   
