@@ -16,6 +16,16 @@ module TaskManagement
     # Common ones are `templates`, `generators`, or `middleware`, for example.
     config.autoload_lib(ignore: %w[assets tasks])
 
+    # Configure cron with a hash that has a unique key for each recurring job
+    config.active_job.queue_adapter = :good_job
+    config.good_job.enable_cron = true
+    config.good_job.cron = {
+      # Every 15 minutes, enqueue `ExampleJob.set(priority: -10).perform_later(42, "life", name: "Alice")`
+      urgent_task: { # each recurring job must have a unique key
+        cron: "@midnight", # cron-style scheduling format by fugit gem
+        class: "UrgentTaskJob", # name of the job class as a String; must reference an Active Job job class
+      }
+    }
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files
