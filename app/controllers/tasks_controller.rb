@@ -6,7 +6,7 @@ class TasksController < ApplicationController
 
   # GET /tasks or /tasks.json
   def index
-    @tasks = Task.all
+    @tasks = current_user.tasks
   end
 
   # GET /tasks/1 or /tasks/1.json
@@ -59,11 +59,11 @@ class TasksController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_task
-      @task = Task.find(params[:id])
+      @task = current_user.tasks.find(params[:id])
     end
 
     def set_project
-      @project = Project.find(params[:project_id])
+      @project = current_user.projects.find(params[:project_id])
     end
 
     # Only allow a list of trusted parameters through.
