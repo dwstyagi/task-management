@@ -11,9 +11,12 @@ class Task < ApplicationRecord
   before_update :update_completed_at
   after_update :notify_urgent_task
 
-  scope :incomplete_first, -> {order(completed_at: :desc)}
-  scope :urgent, -> {where(due_date: (Time.current..24.hours.from_now)).where(completed: false)}
-  scope :completed, -> {where(completed: true)}
+  scope :incomplete_first, -> { order(completed_at: :desc) }
+  scope :urgent, -> { where(due_date: (Time.current..24.hours.from_now)).where(completed: false) }
+  scope :completed, -> { where(completed: true) }
+  scope :expired, -> { where("due_date < ? AND completed = ?", Date.current, false) }
+  scope :pending, -> { where("due_date > ? AND completed = ?", Date.current, false) }
+
   # def self.incomplete_first
   #   order(completed_at: :desc)
   # end

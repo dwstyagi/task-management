@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get "calender/index"
   mount GoodJob::Engine => "good_job"
   get '/search', to: "search#index"
   get '/read_notifications', to: "read_notifications#read_all"
