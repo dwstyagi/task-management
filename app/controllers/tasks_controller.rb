@@ -1,12 +1,13 @@
 class TasksController < ApplicationController
-  layout 'admin'
+  layout "admin"
   before_action :authenticate_user!
+  before_action :authenticate_owner_or_team_leader!, only: %i[create destroy]
   before_action :set_task, only: %i[ show edit update destroy ]
   before_action :set_project
 
   # GET /tasks or /tasks.json
   def index
-    @tasks = current_user.tasks
+    @tasks = Task.all
   end
 
   # GET /tasks/1 or /tasks/1.json
@@ -57,17 +58,18 @@ class TasksController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_task
-      @task = current_user.tasks.find(params[:id])
-    end
 
-    def set_project
-      @project = current_user.projects.find(params[:project_id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_task
+    @task = Task.find(params[:id])
+  end
 
-    # Only allow a list of trusted parameters through.
-    def task_params
-      params.require(:task).permit(:name, :due_date, :completed_at, :priority, :project_id, :completed)
-    end
+  def set_project
+    @project = Project.find(params[:project_id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def task_params
+    params.require(:task).permit(:name, :due_date, :completed_at, :priority, :project_id, :completed, :assignee_id)
+  end
 end

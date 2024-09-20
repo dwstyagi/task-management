@@ -1,10 +1,20 @@
 Rails.application.routes.draw do
+  resources :teams
   get "/calender", to: "calender#index"
-  mount GoodJob::Engine => "good_job"
   get '/search', to: "search#index"
   get '/read_notifications', to: "read_notifications#read_all"
   devise_for :users
   resources :dashboard, only: [:index]
+  authenticate :user, ->(user){ user.organisation_owner? } do
+    mount GoodJob::Engine => "good_job"
+    mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
+    resources :organisation_users do
+      member do
+        post "/change_roles", to: "organisation_users#change_role"
+      end
+    end
+    
+  end
   resources :notifications, only: [:index]
   resources :projects do
     resources :tasks

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_08_29_154419) do
+ActiveRecord::Schema[7.2].define(version: 2024_09_13_161304) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -126,12 +126,33 @@ ActiveRecord::Schema[7.2].define(version: 2024_08_29_154419) do
     t.index ["recipient_type", "recipient_id"], name: "index_noticed_notifications_on_recipient"
   end
 
-  create_table "projects", force: :cascade do |t|
+  create_table "organisations", force: :cascade do |t|
+    t.string "subdomain"
     t.string "name"
-    t.bigint "user_id", null: false
+    t.bigint "owner_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_projects_on_user_id"
+    t.index ["owner_id"], name: "index_organisations_on_owner_id"
+  end
+
+  create_table "projects", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "organisation_id", null: false
+    t.bigint "team_id"
+    t.index ["organisation_id"], name: "index_projects_on_organisation_id"
+    t.index ["team_id"], name: "index_projects_on_team_id"
+  end
+
+  create_table "roles", force: :cascade do |t|
+    t.string "name"
+    t.string "resource_type"
+    t.bigint "resource_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id"
+    t.index ["resource_type", "resource_id"], name: "index_roles_on_resource"
   end
 
   create_table "tasks", force: :cascade do |t|
@@ -143,7 +164,28 @@ ActiveRecord::Schema[7.2].define(version: 2024_08_29_154419) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "completed", default: false
+    t.bigint "organisation_id", null: false
+    t.bigint "assignee_id"
+    t.index ["assignee_id"], name: "index_tasks_on_assignee_id"
+    t.index ["organisation_id"], name: "index_tasks_on_organisation_id"
     t.index ["project_id"], name: "index_tasks_on_project_id"
+  end
+
+  create_table "team_members", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "team_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["team_id"], name: "index_team_members_on_team_id"
+    t.index ["user_id"], name: "index_team_members_on_user_id"
+  end
+
+  create_table "teams", force: :cascade do |t|
+    t.string "name"
+    t.bigint "organisation_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["organisation_id"], name: "index_teams_on_organisation_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -154,10 +196,38 @@ ActiveRecord::Schema[7.2].define(version: 2024_08_29_154419) do
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "full_name"
+    t.integer "organisation_id"
+    t.string "invitation_token"
+    t.datetime "invitation_created_at"
+    t.datetime "invitation_sent_at"
+    t.datetime "invitation_accepted_at"
+    t.integer "invitation_limit"
+    t.string "invited_by_type"
+    t.bigint "invited_by_id"
+    t.integer "invitations_count", default: 0
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["invitation_token"], name: "index_users_on_invitation_token", unique: true
+    t.index ["invited_by_id"], name: "index_users_on_invited_by_id"
+    t.index ["invited_by_type", "invited_by_id"], name: "index_users_on_invited_by"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  add_foreign_key "projects", "users"
+  create_table "users_roles", id: false, force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "role_id"
+    t.index ["role_id"], name: "index_users_roles_on_role_id"
+    t.index ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id"
+    t.index ["user_id"], name: "index_users_roles_on_user_id"
+  end
+
+  add_foreign_key "organisations", "users", column: "owner_id"
+  add_foreign_key "projects", "organisations"
+  add_foreign_key "projects", "teams"
+  add_foreign_key "tasks", "organisations"
   add_foreign_key "tasks", "projects"
+  add_foreign_key "tasks", "users", column: "assignee_id"
+  add_foreign_key "team_members", "teams"
+  add_foreign_key "team_members", "users"
+  add_foreign_key "teams", "organisations"
 end

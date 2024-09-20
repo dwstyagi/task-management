@@ -1,16 +1,24 @@
 <aside data-toggle-target="sidebar" class="fixed h-screen hidden bg-gray-700 w-32 text-gray-200 pl-6 font-bold capitalize">
-    <ul>
-        <li class="mt-6">
-            <a href="#" class="hover:text-gray-800">Home</a>
-        </li>
-        <li class="mt-6">
-            <a href="/dashboard" class="hover:text-gray-800">Dashboard</a>
-        </li>
-        <li class="mt-6">
-            <a href="/projects">Project</a>
-        </li>
-        <li class="mt-6">
-            <a href="/calender">Calender</a>
-        </li>
-    </ul>
+  <ul>
+    <li class="mt-6">
+      <a href="#" class="hover:text-gray-800">Home</a>
+    </li>
+    <li class="mt-6">
+      <a href="/dashboard" class="hover:text-gray-800">Dashboard</a>
+    </li>
+    <li class="mt-6">
+      <a href="/projects">Project</a>
+    </li>
+    <li class="mt-6">
+      <a href="/calender">Calender</a>
+    </li>
+    <% if current_user.organisation_owner? %>
+      <li class="mt-6">
+        <a href="/organisation_users">Users</a>
+      </li>
+    <% end %>
+    <li class="mt-6">
+      <a href="/teams">Teams</a>
+    </li>
+  </ul>
 </aside>

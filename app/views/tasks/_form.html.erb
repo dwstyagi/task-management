@@ -6,7 +6,6 @@
         <% if task.errors.any? %>
           <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-lg mt-3">
             <h2><%= pluralize(task.errors.count, "error") %> prohibited this task from being saved:</h2>
-
             <ul>
               <% task.errors.each do |error| %>
                 <li><%= error.full_message %></li>
@@ -14,27 +13,29 @@
             </ul>
           </div>
         <% end %>
-
-        <div class="my-5">
+        <div class="my-5 text-gray-300">
           <%= form.label :name %>
           <%= form.text_field :name, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
         </div>
-
         <div class="my-5">
           <%= form.label :due_date %>
           <%= form.date_field :due_date, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
         </div>
-
         <div class="my-5">
           <%= form.label :priority %>
           <%= form.select :priority, Task.priorities.keys, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
         </div>
-
+        <%= if current_user.organisation_owner || current_user.has_role?(:team_leader) %>
+          <div class="my-5 text-gray-300">
+            <%= form.label :assign_to %>
+            <%= form.collection_select :assignee_id, @project.team.users, :id, :email, include_blank: true, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
+          </div>
+        <% end %>
         <div class="inline">
           <%= form.submit class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer", data: {turbo_frame: "_top"} %>
           <div class="absolute right-0 top-0">
             <%= link_to project_path(@project) do %>
-                <%= inline_svg_tag("close.svg", class: "text-gray-500 hover:text-gray-200" ) %>
+              <%= inline_svg_tag("close.svg", class: "text-gray-500 hover:text-gray-200" ) %>
             <% end %>
           </div>
         </div>
@@ -42,5 +43,3 @@
     </div>
   </div>
 <% end %>
-
-

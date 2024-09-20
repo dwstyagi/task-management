@@ -1,26 +1,26 @@
 <nav class="bg-gray-700 px-6 py-4 text-gray-200 flex items-center justify-between ">
-    <div>
-        <button data-action="click->toggle#toggleSidebar">
-            <%= inline_svg_tag("sidebar.svg") %>
-        </button>
+  <div>
+    <button data-action="click->toggle#toggleSidebar">
+      <%= inline_svg_tag("sidebar.svg") %>
+    </button>
+  </div>
+  <%= form_with url: search_path, method: :get, data: {controller: "search"} do |form| %>
+    <div class="flex items-center relative">
+      <%= form.text_field :name, class: "rounded-md bg-gray-700", placeholder: "Search For Products", data: {search_target: "input", action: "input->search#debounce"} %>
+      <button type="submit" class="absolute right-0 cursor-pointer">
+        <%= inline_svg_tag("search.svg") %>
+      </button>
     </div>
-    <%= form_with url: search_path, method: :get, data: {controller: "search"} do |form| %>
-        <div class="flex items-center relative">
-            <%= form.text_field :name, class: "rounded-md bg-gray-700", placeholder: "Search For Products", data: {search_target: "input", action: "input->search#debounce"} %>
-            <button type="submit" class="absolute right-0 cursor-pointer">
-                <%= inline_svg_tag("search.svg") %>
-            </button>
-        </div>
+  <% end %>
+  <div data-action="click->toggle#toggleNotificationCard" class="relative cursor-pointer">
+    <% if current_user.notifications.unread.any? %>
+      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
     <% end %>
-    <div data-action="click->toggle#toggleNotificationCard" class="relative cursor-pointer">
-        <% if current_user.notifications.unread.any? %>
-            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
-        <% end %>
-        <%= inline_svg_tag("notification.svg") %>
-        <%= render 'dashboard/notification_card' %>
-    </div>
-    <div data-action="click->toggle#toggleProfileCard" class="relative cursor-pointer">
-        <%= inline_svg_tag("user.svg") %>
-        <%= render 'dashboard/profile_card' %>
-    </div>
+    <%= inline_svg_tag("notification.svg") %>
+    <%= render 'dashboard/notification_card' %>
+  </div>
+  <div data-action="click->toggle#toggleProfileCard" class="relative cursor-pointer">
+    <%= inline_svg_tag("user.svg") %>
+    <%= render 'dashboard/profile_card' %>
+  </div>
 </nav>

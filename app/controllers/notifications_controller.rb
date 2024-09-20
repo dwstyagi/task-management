@@ -1,5 +1,5 @@
 class NotificationsController < ApplicationController
-  layout 'admin'
+  layout "admin"
   before_action :authenticate_user!
 
   def index

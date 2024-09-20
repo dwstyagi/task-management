@@ -1,0 +1,14 @@
+<div id="<%= dom_id team %>" class="text-gray-300">
+  <p class="my-5">
+    <strong class="block font-medium mb-1">Name:</strong>
+    <%= team.name %>
+  </p>
+  <p class="my-5">
+    <strong class="block font-medium mb-1">Organisation:</strong>
+    <%= team.organisation.name %>
+  </p>
+  <p class="my-5">
+    <strong class="block font-medium mb-1">Teams:</strong>
+    <%= team.users.map(&:email).join(", ") %>
+  </p>
+</div>
