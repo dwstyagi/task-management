@@ -7,10 +7,12 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
-# user = User.create(
-#   email: "test@test.com",
-#   password: "password"
-# )
+user = User.create(
+  full_name: "admin",
+  email: "support@admin.com",
+  password: "password",
+  admin: true,
+)
 
 # projects = 20.times.map do
 #   Project.create!(name: Faker::Educator.unique.subject, user: user)

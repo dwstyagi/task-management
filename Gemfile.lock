@@ -204,6 +204,8 @@ GEM
       racc
     pg (1.5.7)
     pg (1.5.7-x64-mingw-ucrt)
+    pretender (0.5.0)
+      actionpack (>= 6.1)
     psych (5.1.2)
       stringio
     public_suffix (6.0.1)
@@ -374,6 +376,7 @@ DEPENDENCIES
   noticed
   pagy
   pg (~> 1.1)
+  pretender
   puma (>= 5.0)
   rails (~> 7.2.0)
   ransack

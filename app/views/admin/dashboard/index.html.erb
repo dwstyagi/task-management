@@ -1,0 +1,26 @@
+<div class="text-gray-200 p-4 w-full">
+  <%= button_to "Log out", destroy_user_session_path, method: :delete, class: "text-gray-600" %>
+  <div class="w-full mt-4">
+    <table class="bg-gray-800 rounded-md w-full">
+      <thead>
+        <tr class="text-left uppercase border-b border-gray-500">
+          <th class="px-4 py-3">Organisation</th>
+          <th class="px-4 py-3">Team</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @Organisation.each do |organisation| %>
+          <tr class="border-b border-gray-500">
+            <td class="px-4 py-3"><%= organisation.name %></td>
+            <td class="px-4 py-3"><%= organisation.owner&.full_name %></td>
+            <td class="py-3">
+              <%= link_to admin_dashboard_index_path do %>
+                <%= inline_svg_tag("show.svg") %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
